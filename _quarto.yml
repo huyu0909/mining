@@ -2,7 +2,7 @@ project:
   type: website
 
 website:
-  title: "blog"
+  title: "blog-mining"
   navbar:
     right:
       - about.qmd
