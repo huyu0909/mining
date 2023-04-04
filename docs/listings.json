@@ -3,6 +3,7 @@
     "listing": "/index.html",
     "items": [
       "/posts/numpy2.html",
+      "/posts/pandas.html",
       "/posts/post-with-code/index.html",
       "/posts/welcome/index.html"
     ]
