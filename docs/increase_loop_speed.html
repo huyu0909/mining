@@ -178,7 +178,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="for-loop-속도-개선하기" class="level2">
 <h2 class="anchored" data-anchor-id="for-loop-속도-개선하기">For loop 속도 개선하기</h2>
 <p>강의자료 출처 - https://blog.fearcat.in/a?ID=00900-6997c6fb-2680-4531-af1d-73eeccce74ef - https://aldente0630.github.io/data-science/2018/08/05/a-beginners-guide-to-optimizing-pandas-code-for-speed.html</p>
-<div class="cell" data-editable="true" data-execution_count="1">
+<div class="cell" data-editable="true" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -186,12 +186,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="read-in-the-data" class="level3">
 <h3 class="anchored" data-anchor-id="read-in-the-data">Read in the data</h3>
 <p>익스피디아 개발자 사이트에서 제공한 뉴욕 주 내 모든 호텔 좌표가 들어있는 데이터셋</p>
-<div class="cell" data-editable="true" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'new_york_hotels.csv'</span>, encoding<span class="op">=</span><span class="st">'cp1252'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: name 'os' is not defined</code></pre>
 </div>
-<div class="cell" data-editable="true" data-scrolled="true" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="17">
+</div>
+<div class="cell" data-editable="true" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'C://Users//jiui//Desktop//mining//dataset//new_york_hotels.csv'</span>, encoding<span class="op">=</span><span class="st">'cp1252'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-editable="true" data-scrolled="true" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
 
 <div>
 
@@ -293,16 +300,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="haversine-definition" class="level2">
 <h2 class="anchored" data-anchor-id="haversine-definition">Haversine definition</h2>
 <p>두 위치 사이의 거리를 계산하는 함수 - https://stricky.tistory.com/284</p>
-<div class="cell" data-editable="true" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> haversine(lat1, lon1, lat2, lon2):</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    miles_constant <span class="op">=</span> <span class="dv">3959</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    lat1, lon1, lat2, lon2 <span class="op">=</span> <span class="bu">map</span>(np.deg2rad, [lat1, lon1, lat2, lon2])</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    dlat <span class="op">=</span> lat2 <span class="op">-</span> lat1 </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    dlon <span class="op">=</span> lon2 <span class="op">-</span> lon1 </span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> np.sin(dlat<span class="op">/</span><span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> np.cos(lat1) <span class="op">*</span> np.cos(lat2) <span class="op">*</span> np.sin(dlon<span class="op">/</span><span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.arcsin(np.sqrt(a)) </span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    mi <span class="op">=</span> miles_constant <span class="op">*</span> c</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-editable="true" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#출발지와 도착지의 위경도 </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> haversine(lat1, lon1, lat2, lon2):</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    miles_constant <span class="op">=</span> <span class="dv">3959</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    lat1, lon1, lat2, lon2 <span class="op">=</span> <span class="bu">map</span>(np.deg2rad, [lat1, lon1, lat2, lon2])</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    dlat <span class="op">=</span> lat2 <span class="op">-</span> lat1 </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    dlon <span class="op">=</span> lon2 <span class="op">-</span> lon1 </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> np.sin(dlat<span class="op">/</span><span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> np.cos(lat1) <span class="op">*</span> np.cos(lat2) <span class="op">*</span> np.sin(dlon<span class="op">/</span><span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.arcsin(np.sqrt(a)) </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    mi <span class="op">=</span> miles_constant <span class="op">*</span> c</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="task" class="level2">
@@ -311,36 +320,49 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="looping-haversine" class="level2">
 <h2 class="anchored" data-anchor-id="looping-haversine">Looping Haversine</h2>
-<div class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> haversine_looping(df):</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    distance_list <span class="op">=</span> []</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(df)):</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> haversine(<span class="fl">40.671</span>, <span class="op">-</span><span class="fl">73.985</span>, df.iloc[i][<span class="st">'latitude'</span>], df.iloc[i][<span class="st">'longitude'</span>])</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        distance_list.append(d)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> distance_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> haversine_looping(df):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    distance_list <span class="op">=</span> []</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(df)):</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        d <span class="op">=</span> haversine(<span class="fl">40.671</span>, <span class="op">-</span><span class="fl">73.985</span>, df.iloc[i][<span class="st">'latitude'</span>], df.iloc[i][<span class="st">'longitude'</span>])</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        distance_list.append(d)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> distance_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Haversine 반복 함수 실행하기</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'distance'</span>] <span class="op">=</span> haversine_looping(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Haversine 반복 함수 실행하기</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'distance'</span>] <span class="op">=</span> haversine_looping(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>323 ms ± 2.15 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)</code></pre>
+<pre><code>134 ms ± 752 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)</code></pre>
 </div>
 </div>
 </section>
 <section id="iterrows-haversine" class="level2">
 <h2 class="anchored" data-anchor-id="iterrows-haversine">Iterrows Haversine</h2>
 <p>반복문을 돌려야 할 때 iterrows() 메서드를 사용하는 건 행을 반복하기 위한 더 좋은 방법이다. iterrows()는 데이터 프레임의 행을 반복하며 행 자체를 포함하는 객체에 덧붙여 각 행의 색인을 반환하는 제너레이터다. iterrows()는 판다스 데이터 프레임과 함께 작동하게끔 최적화되어 있으며 표준 함수 대부분을 실행하는 데 가장 효율적인 방법은 아니지만(나중에 자세히 설명) 단순 반복보다는 상당히 개선되었다. 예제의 경우 iterrows()는 행을 수동으로 반복하는 것보다 거의 똑같은 문제를 약 4배 빠르게 해결한다.</p>
-<div class="cell" data-editable="true" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Haversine applied on rows via iteration</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>haversine_series <span class="op">=</span> []</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> index, row <span class="kw">in</span> df.iterrows():</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    haversine_series.append(haversine(<span class="fl">40.671</span>, <span class="op">-</span><span class="fl">73.985</span>, row[<span class="st">'latitude'</span>], row[<span class="st">'longitude'</span>]))</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'distance'</span>] <span class="op">=</span> haversine_series</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-editable="true" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Haversine applied on rows via iteration</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>haversine_series <span class="op">=</span> []</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> index, row <span class="kw">in</span> df.iterrows():</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    haversine_series.append(haversine(<span class="fl">40.671</span>, <span class="op">-</span><span class="fl">73.985</span>, row[<span class="st">'latitude'</span>], row[<span class="st">'longitude'</span>]))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'distance'</span>] <span class="op">=</span> haversine_series</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>88.4 ms ± 682 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)</code></pre>
+<pre><code>33 ms ± 205 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.DataFrame({<span class="st">'A'</span>:[<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>],<span class="st">'B'</span>:[<span class="st">'a'</span>,<span class="st">'b'</span>,<span class="st">'c'</span>]})</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   A  B
+0  1  a
+1  2  b
+2  3  c</code></pre>
 </div>
 </div>
 </section>
@@ -350,12 +372,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>익명의 람다 함수를 사용하여 Haversine 함수를 각 행에 적용하며 각 행의 특정 셀을 함수 입력값으로 지정할 수 있다. 람다 함수는 판다스가 행(축 = 1)과 열(축 = 0) 중 어디에 함수를 적용할지 정할 수 있게 축 매개 변수를 마지막에 포함한다.</p>
 <section id="timing-apply" class="level3">
 <h3 class="anchored" data-anchor-id="timing-apply">Timing “apply”</h3>
-<div class="cell" data-editable="true" data-scrolled="true" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>timeit df[<span class="st">'distance'</span>] <span class="op">=\</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>df.<span class="bu">apply</span>(<span class="kw">lambda</span> row: haversine(<span class="fl">40.671</span>, <span class="op">-</span><span class="fl">73.985</span>,<span class="op">\</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                               row[<span class="st">'latitude'</span>], row[<span class="st">'longitude'</span>]), axis<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-editable="true" data-scrolled="true" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>timeit df[<span class="st">'distance'</span>] <span class="op">=\</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>df.<span class="bu">apply</span>(<span class="kw">lambda</span> row: haversine(<span class="fl">40.671</span>, <span class="op">-</span><span class="fl">73.985</span>,<span class="op">\</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                               row[<span class="st">'latitude'</span>], row[<span class="st">'longitude'</span>]), axis<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>38.3 ms ± 179 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)</code></pre>
+<pre><code>17.8 ms ± 123 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)</code></pre>
 </div>
 </div>
 </section>
@@ -367,12 +389,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>함수 수행의 반복량 줄이는 방법을 이해하기 위해 판다스의 기본 단위, 데이터 프레임과 시리즈가 모두 배열 기반임을 알아두자. 기본 단위의 내부 구조는 개별 값(스칼라라고 함)마다 순차적으로 작동하는 대신 전체 배열 위로 작동하도록 설계된 내장 판다스 함수를 위해 변환된다. 벡터화는 전체 배열 위로 작업을 실행하는 프로세스다.</p>
 <p>판다스는 수학 연산에서 집계 및 문자열 함수(사용 가능한 함수의 광범위한 목록은 판다스 문서에서 확인해라)에 이르기까지 다양한 벡터화 함수를 포함하고 있다. 내장 함수는 판다스 시리즈와 데이터 프레임에서 작동하게끔 최적화되어있다. 결과적으로 벡터화 판다스 함수를 사용하는 건 비슷한 목적을 위해 손수 반복시키는 방법보다 거의 항상 바람직하다.</p>
 <p>지금까지는 Haversine 함수에 스칼라를 전달했다. 그러나 Haversine 함수 내에서 사용하는 모든 함수를 배열 위로 작동시킬 수 있다. 이렇게 하면 거리 함수를 매우 간단하게 벡터화할 수 있다. 스칼라 값으로 각 위도, 경도를 전달하는 대신 전체 시리즈(열)를 전달한다. 이를 통해 판다스는 벡터화 함수에 적용 가능한 모든 최적화 옵션을 활용할 수 있고 특히 전체 배열에 대한 모든 계산을 동시에 수행하게 된다.</p>
-<div class="cell" data-editable="true" data-execution_count="40">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vectorized implementation of Haversine applied on Pandas series</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>timeit df[<span class="st">'distance'</span>] <span class="op">=</span> haversine(<span class="fl">40.671</span>, <span class="op">-</span><span class="fl">73.985</span>,<span class="op">\</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>                                   df[<span class="st">'latitude'</span>], df[<span class="st">'longitude'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-editable="true" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vectorized implementation of Haversine applied on Pandas series</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>timeit df[<span class="st">'distance'</span>] <span class="op">=</span> haversine(<span class="fl">40.671</span>, <span class="op">-</span><span class="fl">73.985</span>,<span class="op">\</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                                   df[<span class="st">'latitude'</span>], df[<span class="st">'longitude'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>1.55 ms ± 13.8 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)</code></pre>
+<pre><code>525 µs ± 3.92 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)</code></pre>
 </div>
 </div>
 <p>함수 벡터화를 통해 apply() 메서드 대비 50배 이상 개선시켰고 iterrows() 대비 100배 이상 개선시켰다. 입력 유형 변경하는 것 외에 아무것도 하지 않아도 됐다!</p>
@@ -386,21 +408,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>위도와 경도 배열을 시리즈의 values 메서드를 단순 사용해서 판다스 시리즈에서 넘파이 배열로 변환한다. 시리즈의 벡터화와 마찬가지로 넘파이 배열을 함수에 직접 전달하면 판다스가 전체 벡터에 함수를 적용시킨다.</p>
 <section id="timing-vectorized-implementation-1" class="level4">
 <h4 class="anchored" data-anchor-id="timing-vectorized-implementation-1">Timing vectorized implementation</h4>
-<div class="cell" data-editable="true" data-execution_count="41">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vectorized implementation of Haversine applied on NumPy arrays</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>timeit df[<span class="st">'distance'</span>] <span class="op">=</span> haversine(<span class="fl">40.671</span>, <span class="op">-</span><span class="fl">73.985</span>,<span class="op">\</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                         df[<span class="st">'latitude'</span>].values, df[<span class="st">'longitude'</span>].values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-editable="true" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vectorized implementation of Haversine applied on NumPy arrays</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>timeit df[<span class="st">'distance'</span>] <span class="op">=</span> haversine(<span class="fl">40.671</span>, <span class="op">-</span><span class="fl">73.985</span>,<span class="op">\</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                         df[<span class="st">'latitude'</span>].values, df[<span class="st">'longitude'</span>].values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>308 µs ± 4 µs per loop (mean ± std. dev. of 7 runs, 1000 loops each)</code></pre>
+<pre><code>60.2 µs ± 507 ns per loop (mean ± std. dev. of 7 runs, 10000 loops each)</code></pre>
 </div>
 </div>
-<div class="cell" data-editable="true" data-execution_count="42">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert pandas arrays to NumPy ndarrays</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>np_lat <span class="op">=</span> df[<span class="st">'latitude'</span>].values</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>np_lon <span class="op">=</span> df[<span class="st">'longitude'</span>].values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-editable="true" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>timeit</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert pandas arrays to NumPy ndarrays</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>np_lat <span class="op">=</span> df[<span class="st">'latitude'</span>].values</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>np_lon <span class="op">=</span> df[<span class="st">'longitude'</span>].values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>4.31 µs ± 23.4 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)</code></pre>
+<pre><code>2.28 µs ± 32 ns per loop (mean ± std. dev. of 7 runs, 100000 loops each)</code></pre>
 </div>
 </div>
 </section>
@@ -412,6 +434,1218 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 2 . 반복해야 하는 경우 반복 함수가 아닌 apply()를 사용해라.<br>
 3 . 보통은 벡터화가 스칼라 연산보다 낫다. 대부분의 판다스 작업은 벡터화시킬 수 있다.<br>
 4 . 넘파이 배열에서의 벡터 연산은 판다스 시리즈에서 수행하는 것보다 효율적이다.</p>
+<p>현재 나는 40.671,-73.985 직선거리 기준으로 200보다 작고 ㄴ</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(haversine(<span class="fl">40.671</span>, <span class="op">-</span><span class="fl">73.985</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>TypeError: haversine() missing 2 required positional arguments: 'lat2' and 'lon2'</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>distance_list <span class="op">=</span> haversine_looping(df)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>distance_list <span class="co">#직선거리 LIST</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="31">
+<pre><code>[139.60718990468314,
+ 139.7468975690499,
+ 142.19105019740348,
+ 137.27554601978198,
+ 139.6845833975413,
+ 142.51142702074702,
+ 139.22365519164777,
+ 137.50441406907777,
+ 141.9774911345873,
+ 138.91955469651396,
+ 141.11563069456204,
+ 137.3203860002506,
+ 136.97856807946653,
+ 139.8973388410462,
+ 142.05019614681575,
+ 141.0701358852327,
+ 141.6853330520409,
+ 141.73337335126004,
+ 139.0531985378796,
+ 139.5583855858655,
+ 141.28704958482214,
+ 142.17320162032993,
+ 142.02076267423007,
+ 142.21807025310167,
+ 138.92504179217497,
+ 142.266292707799,
+ 139.63740538641187,
+ 140.72789587052682,
+ 141.77541531435506,
+ 141.75768752417588,
+ 136.94461742445353,
+ 139.55973230922967,
+ 141.64840710506382,
+ 139.18874222243042,
+ 141.79943053181353,
+ 141.24794000213632,
+ 137.23991025543913,
+ 137.30738891035375,
+ 141.57618393664677,
+ 253.25271853949954,
+ 222.047039471067,
+ 294.678826493047,
+ 294.78233777328677,
+ 294.7895804966099,
+ 294.77554001935584,
+ 294.4669163600977,
+ 294.70595528804364,
+ 296.45886666124244,
+ 295.350824282476,
+ 293.86415607052203,
+ 296.52041682611946,
+ 295.21713781488074,
+ 296.6940229339006,
+ 294.65985158922484,
+ 292.71035615562903,
+ 294.7855011796922,
+ 156.19077759767183,
+ 156.41315649200357,
+ 147.49265397357354,
+ 147.45122415488578,
+ 24.354672529415083,
+ 34.20501742511509,
+ 7.881437453230406,
+ 7.147666481196548,
+ 110.16679954732662,
+ 205.29083536246083,
+ 204.93667178487084,
+ 205.37927370238523,
+ 205.26498672197502,
+ 202.50722077578556,
+ 205.11009550084907,
+ 209.86235084926898,
+ 209.9849382607673,
+ 210.18645049574562,
+ 163.1043828693058,
+ 75.68314877762933,
+ 270.66340043298095,
+ 270.57645220219473,
+ 270.65589338119804,
+ 270.6376627186693,
+ 270.420889736816,
+ 270.51033119940973,
+ 270.424596724567,
+ 270.3547032119245,
+ 270.3543032452585,
+ 208.13738018567594,
+ 207.7992636362014,
+ 207.79599594104806,
+ 207.8534341791499,
+ 37.347474807834786,
+ 39.67028453358185,
+ 13.36164561746588,
+ 13.033630144048587,
+ 13.318139762203105,
+ 57.46798186988469,
+ 14.62669360330341,
+ 55.13423765300527,
+ 300.3946732838025,
+ 26.14150652122153,
+ 142.2012893950358,
+ 140.43881847684088,
+ 140.5964563156995,
+ 141.69519799258,
+ 142.17035505062364,
+ 141.5752471623558,
+ 141.55642047891905,
+ 142.12542965025315,
+ 142.59436955895455,
+ 288.96644124096076,
+ 47.18129579459373,
+ 46.295099859484424,
+ 200.61097863791093,
+ 289.05681562625114,
+ 208.60195443158395,
+ 90.00126360615856,
+ 10.734435299975866,
+ 267.9299134779421,
+ 267.92632158744266,
+ 268.18442066806335,
+ 10.607551670593221,
+ 14.882190382060475,
+ 16.50265420785959,
+ 11.432263852248703,
+ 12.845736441619414,
+ 16.76180816631047,
+ 12.245195097525547,
+ 11.87380408233325,
+ 14.387735579630029,
+ 10.859265439156514,
+ 1.4238052567150787,
+ 1.9744563625189568,
+ 1.432107045688975,
+ 1.2549011912248116,
+ 1.394296663143378,
+ 3.786288173712957,
+ 0.5653658776601006,
+ 0.4843098161972185,
+ 0.16348049564769865,
+ 2.2935984654723454,
+ 1.3988884748597543,
+ 0.8658244592498348,
+ 0.45637694334260454,
+ 4.885345359872069,
+ 3.6109612701216167,
+ 0.47434695223314843,
+ 0.7138213357019375,
+ 3.9167902358754367,
+ 2.3724991375211943,
+ 2.960514694388299,
+ 1.2604494138993767,
+ 1.0465469950033897,
+ 0.6622600002033198,
+ 5.107848180528916,
+ 1.6834642430437434,
+ 1.577023139268975,
+ 4.546808081594983,
+ 5.276402149379955,
+ 4.301184377656378,
+ 2.116110170618459,
+ 1.596733398586618,
+ 1.8116077473706989,
+ 5.3055009465880385,
+ 1.3368806394463666,
+ 4.483599964988982,
+ 2.15097035113079,
+ 1.6845980317260416,
+ 4.210067519791577,
+ 2.946064091764279,
+ 3.1519165178815896,
+ 3.308162955799934,
+ 1.695426252224207,
+ 3.112599816348662,
+ 4.479239613226196,
+ 3.1222110969141106,
+ 1.8580656934851836,
+ 3.8485929335162017,
+ 4.587110162825954,
+ 1.8476750092225396,
+ 6.493834420999122,
+ 5.008489927933916,
+ 1.155614142352765,
+ 1.46539411638349,
+ 1.749018825195286,
+ 3.527670494546345,
+ 6.603864128131319,
+ 3.8385569843070786,
+ 5.973734587228455,
+ 1.6838880662132358,
+ 2.5946485341420535,
+ 1.1494206446942674,
+ 1.308662211966456,
+ 2.187859704815911,
+ 1.8520062934907506,
+ 1.7779110444674988,
+ 3.9205040639353856,
+ 3.404347266586733,
+ 4.5128005398510815,
+ 3.5389404575549603,
+ 3.2528864210716444,
+ 1.900699341135513,
+ 1.4800422883372177,
+ 3.6007085719441654,
+ 294.79233999341454,
+ 295.13369612526543,
+ 294.77284547856726,
+ 294.9600702934311,
+ 294.97423609916154,
+ 294.63675171571737,
+ 294.8088646811444,
+ 295.07762885391554,
+ 294.4937018436882,
+ 294.66988933257915,
+ 294.87305233537325,
+ 294.6824010802318,
+ 294.53327796483734,
+ 294.97648307264285,
+ 191.08421497768953,
+ 250.9353541128704,
+ 91.31219519025042,
+ 226.0671347655232,
+ 226.96380667624604,
+ 227.97968897284647,
+ 225.38434191087794,
+ 227.29459137769373,
+ 226.89720646720605,
+ 227.59749975956655,
+ 229.25995762313963,
+ 231.74105761338794,
+ 227.833487162278,
+ 190.19028347796126,
+ 277.6701426008381,
+ 277.83390844831047,
+ 19.896322929475904,
+ 19.847416194795148,
+ 243.04111256418827,
+ 182.76954016398253,
+ 183.3628828445641,
+ 35.39786834849487,
+ 42.01872277605231,
+ 45.615176042385194,
+ 45.157923347438185,
+ 37.433668154351686,
+ 303.0704695405988,
+ 290.2335822910795,
+ 290.3676314585503,
+ 289.64039618244715,
+ 289.4436659622546,
+ 289.91304038682966,
+ 290.0735133256047,
+ 289.90742868131736,
+ 291.0364031480718,
+ 290.2767861232334,
+ 290.8879087062336,
+ 290.25112957164896,
+ 290.9524393265272,
+ 291.066680901379,
+ 290.92458795961653,
+ 289.8426537856468,
+ 289.9877180391875,
+ 290.00764916185983,
+ 289.4867420454615,
+ 290.4987344100873,
+ 290.23233606059466,
+ 290.63369992673796,
+ 289.96682834129064,
+ 288.7154864350132,
+ 49.83436259679948,
+ 204.263893479903,
+ 205.14527569758977,
+ 205.11114320586057,
+ 202.95961017893964,
+ 285.96427524613995,
+ 287.99229940299404,
+ 287.57867129411164,
+ 90.42607879851859,
+ 152.0216969006681,
+ 151.94054295064157,
+ 151.89967581531812,
+ 151.51011076100252,
+ 152.04163922602743,
+ 152.18361378887474,
+ 152.30098954260492,
+ 151.46565923598126,
+ 151.96833967134842,
+ 152.42894003148396,
+ 312.7571947538674,
+ 313.21453865533215,
+ 141.24392447231594,
+ 141.0289112921436,
+ 30.316797442019613,
+ 37.34394840310741,
+ 146.03647877263984,
+ 145.7841170534963,
+ 151.29152259541536,
+ 148.33081079272554,
+ 146.399257484625,
+ 30.870407425463764,
+ 278.7024703098872,
+ 189.21222217847134,
+ 188.5267165228475,
+ 189.48061054754587,
+ 190.2276175252872,
+ 185.95456371383983,
+ 188.65238738942247,
+ 53.47113332288973,
+ 117.77728796199989,
+ 8.996154028500072,
+ 8.981268210134388,
+ 8.87916644962186,
+ 8.882257749920159,
+ 174.88399416032686,
+ 169.3824960815678,
+ 175.05426336468707,
+ 175.056727188809,
+ 175.30067308958073,
+ 174.80319527156982,
+ 175.0354933860353,
+ 174.95580620443062,
+ 174.5534482477554,
+ 174.80061266980042,
+ 174.84680632528622,
+ 118.93008986650223,
+ 119.3863387292751,
+ 246.61239711691974,
+ 196.18344174760506,
+ 194.765316202236,
+ 301.95867670024245,
+ 303.5553444307112,
+ 301.9420671724725,
+ 215.67576746674433,
+ 278.8945406117149,
+ 9.111242080662793,
+ 9.118994212195084,
+ 9.116652129324713,
+ 8.24669441669755,
+ 8.347958061492703,
+ 8.731076518491584,
+ 8.852440438401201,
+ 8.563926794341869,
+ 136.1687332002562,
+ 132.78511514578275,
+ 135.86250226286467,
+ 134.1045790197427,
+ 135.7579314279839,
+ 26.409370778609503,
+ 75.14038012292639,
+ 198.7576924110773,
+ 196.33945056882868,
+ 198.74547455696452,
+ 199.0415990273108,
+ 199.14299606781452,
+ 198.8403622819615,
+ 199.07834200497132,
+ 198.77545623341658,
+ 199.10789348105328,
+ 199.13949205774946,
+ 199.07452443016217,
+ 199.0654815173257,
+ 199.11036035516372,
+ 199.13920249233914,
+ 199.05900105672012,
+ 198.87209641262967,
+ 198.75358453122425,
+ 199.50209611185704,
+ 199.09324259590508,
+ 198.84149572752708,
+ 266.60949306997753,
+ 266.1422063182629,
+ 6.8774368606762915,
+ 181.06233555842888,
+ 181.65728736606346,
+ 175.49158335782602,
+ 177.7283983335029,
+ 177.71824451513132,
+ 27.865286319425607,
+ 27.81278149568517,
+ 28.006637036149595,
+ 28.98935813367313,
+ 146.53909402672411,
+ 145.19567537371128,
+ 251.45901714154152,
+ 251.5286766467064,
+ 242.48093530147142,
+ 287.8674859024839,
+ 11.572183822422286,
+ 12.230862548113945,
+ 29.73463423725437,
+ 29.632450541344003,
+ 29.7603439357273,
+ 235.48646613223008,
+ 236.26301406361654,
+ 235.3845648607829,
+ 51.605560619244066,
+ 193.63550995190525,
+ 314.93630576226565,
+ 59.57607909903431,
+ 59.22306249190054,
+ 59.25269005180811,
+ 59.28367752673779,
+ 59.382679211906016,
+ 59.467784230080156,
+ 59.35395736381617,
+ 59.35241148752378,
+ 59.42313276915195,
+ 59.38590273202955,
+ 59.38529944478401,
+ 59.186200768654295,
+ 59.186200768654295,
+ 15.01789419538428,
+ 14.827386499562625,
+ 10.12414057812474,
+ 10.160611206752616,
+ 10.300606215008836,
+ 10.13698869460822,
+ 8.545979744195009,
+ 10.060450527706303,
+ 10.100405073714066,
+ 10.131439591293162,
+ 10.506431068967002,
+ 9.936034986433487,
+ 10.037898133870199,
+ 10.12801836647259,
+ 10.085746936861273,
+ 9.523154123465568,
+ 10.28761379900175,
+ 302.12857045380036,
+ 301.64644263579305,
+ 21.564371534442735,
+ 11.364225740258806,
+ 11.257905322701246,
+ 11.212578105548516,
+ 220.34444741433262,
+ 18.467930925533427,
+ 20.3409775335095,
+ 20.256746751311653,
+ 20.405956794408148,
+ 244.9854224066105,
+ 245.0112903841019,
+ 245.6953972571978,
+ 216.32493633703993,
+ 216.9410661451382,
+ 216.82566842656877,
+ 216.54020349688105,
+ 216.80735510693623,
+ 216.9040563870522,
+ 216.6688298025408,
+ 23.66184780325811,
+ 135.30130695263455,
+ 135.0727949362587,
+ 183.30577597963617,
+ 183.2102139321273,
+ 53.27146645922995,
+ 300.5526077996057,
+ 305.1895903687626,
+ 303.97324357773,
+ 15.820616819120831,
+ 15.592634513711342,
+ 89.70185592240233,
+ 41.12424406293014,
+ 214.34037258312202,
+ 105.47414755678535,
+ 288.8400814224666,
+ 288.8402382215398,
+ 288.746519596112,
+ 288.54265976438916,
+ 288.8772110493296,
+ 288.5100004963332,
+ 206.06062660912326,
+ 205.85177362227068,
+ 41.122366995740244,
+ 38.810947197552245,
+ 43.65280907338601,
+ 42.181762037391636,
+ 36.202769570235795,
+ 196.47594455407526,
+ 250.42848652876646,
+ 250.58702558034997,
+ 250.57931070683063,
+ 250.59607111231458,
+ 250.6543952562379,
+ 250.3232644601439,
+ 250.62502313087654,
+ 170.955766559514,
+ 170.30726919848973,
+ 23.570310173374867,
+ 26.15239391216776,
+ 73.12615374051134,
+ 71.84672378644966,
+ 73.85402294197912,
+ 72.94608625723876,
+ 47.312222540545875,
+ 46.18366088289514,
+ 44.81252001819756,
+ 298.7862722179731,
+ 51.56472380524092,
+ 49.65429666230307,
+ 232.9085781350919,
+ 63.972620037648646,
+ 223.8660482939495,
+ 223.36694217023134,
+ 221.8746021336022,
+ 181.32239400351494,
+ 180.19186596180035,
+ 181.74646746925794,
+ 182.78323622408297,
+ 180.38894268571624,
+ 181.31540671680463,
+ 180.39248938354888,
+ 179.01558401965988,
+ 181.3599428147915,
+ 7.870638090231681,
+ 106.90567183016415,
+ 107.07981405500195,
+ 30.030408176964368,
+ 32.567129106964835,
+ 31.5443563545794,
+ 76.27863840522816,
+ 77.70178531354505,
+ 42.994909011997066,
+ 178.08293015019336,
+ 179.94148172995705,
+ 178.2680363864703,
+ 178.27153489512895,
+ 176.7183232440613,
+ 176.81967102927317,
+ 179.4942949937666,
+ 178.51636219278433,
+ 178.271402524564,
+ 178.59448511843257,
+ 179.25815135532292,
+ 179.92306607787947,
+ 178.56127154280443,
+ 177.08370363759633,
+ 179.52284735705115,
+ 178.3817973410083,
+ 176.79986995234427,
+ 175.17589640756393,
+ 178.23860179902232,
+ 178.26647487076147,
+ 9.396220880879973,
+ 10.492861494847691,
+ 9.975273627825091,
+ 9.16628605776399,
+ 10.165036608035063,
+ 9.325335797416592,
+ 10.499905695111309,
+ 10.667682873084825,
+ 9.343790545894548,
+ 9.779293565543357,
+ 10.020577804566807,
+ 10.752876984372469,
+ 9.891316040217726,
+ 9.09691145491699,
+ 12.82759913017314,
+ 10.869549476537996,
+ 10.538877820327546,
+ 9.297869890945364,
+ 9.728106788510736,
+ 10.673057611861577,
+ 10.388937424781718,
+ 10.632545193115044,
+ 10.058351607280779,
+ 10.570297008274967,
+ 9.141678118752786,
+ 10.569645074524457,
+ 9.78889002852387,
+ 9.825118240580949,
+ 9.917441172661178,
+ 9.186420347975364,
+ 11.402941093254691,
+ 290.1794890733067,
+ 290.12035454221717,
+ 289.8344022115219,
+ 291.3474054095948,
+ 290.1810470254892,
+ 266.05771481294835,
+ 23.64573719479303,
+ 25.086715646556215,
+ 23.460812295013987,
+ 143.95687490633148,
+ 144.71865756272322,
+ 143.80396619232795,
+ 143.8795652201218,
+ 143.78451295169725,
+ 162.79428573651705,
+ 163.58108612867295,
+ 163.6870318721267,
+ 298.54685615019173,
+ 79.37219376672815,
+ 77.0505246465701,
+ 89.06477114880514,
+ 87.5856961918279,
+ 88.56259523546426,
+ 89.53553028743033,
+ 87.57608955039309,
+ 88.1974964883778,
+ 89.75020117626713,
+ 291.184330829111,
+ 190.12032332174934,
+ 191.10413490899757,
+ 189.8207389073624,
+ 190.57693726915485,
+ 187.17837572780863,
+ 189.84688116696967,
+ 186.81478857747328,
+ 189.69823828530204,
+ 186.79121472391063,
+ 189.38792222852575,
+ 190.45583524725663,
+ 189.39791731767932,
+ 191.66306443649324,
+ 188.6619116884312,
+ 189.39175100503482,
+ 190.2593523205374,
+ 191.2250541407896,
+ 194.5130412453799,
+ 190.1417207387752,
+ 191.25551446519145,
+ 190.46438118219658,
+ 194.93609321396647,
+ 191.22005884588037,
+ 194.50623408185115,
+ 190.97287019235927,
+ 191.18315641615465,
+ 250.18439490430384,
+ 249.6074984661723,
+ 249.0042936320792,
+ 248.64121417718061,
+ 250.1830095188667,
+ 249.7912453232405,
+ 250.40831498337477,
+ 248.7535921948557,
+ 250.18715984439893,
+ 249.8838160816783,
+ 250.251506299552,
+ 250.5410968290111,
+ 250.334372891302,
+ 249.65786889068283,
+ 242.4615952727092,
+ 183.25150148970155,
+ 143.71787565703372,
+ 145.46369907521748,
+ 144.1965704804497,
+ 145.5743233737891,
+ 144.19217567219346,
+ 144.45072028865735,
+ 144.3076558090026,
+ 142.5594999022545,
+ 145.20623448456413,
+ 143.38196063916263,
+ 144.16078467494896,
+ 144.96861590059945,
+ 145.23082787737658,
+ 144.95029412279197,
+ 144.38778955075546,
+ 144.46505272659874,
+ 140.6432490734817,
+ 13.157823519639328,
+ 312.39825194729576,
+ 311.613024068917,
+ 312.4877859328649,
+ 86.30264244515082,
+ 85.99874080971149,
+ 286.70961517693615,
+ 169.79660883914636,
+ 169.92064417420443,
+ 170.34135987761513,
+ 202.60859713706023,
+ 201.44128053913707,
+ 208.72727994492382,
+ 201.46549575074232,
+ 202.10516599292606,
+ 202.81306902391663,
+ 201.53231393297966,
+ 204.9007177101919,
+ 201.55770764568751,
+ 202.5430785895238,
+ 202.57245024136535,
+ 208.79883357146187,
+ 296.7491824399211,
+ 296.7722930265813,
+ 295.8724210275654,
+ 197.95805073946144,
+ 17.725283027282302,
+ 18.44198794795766,
+ 6.343305467254796,
+ 6.2819862660064825,
+ 6.295250512629471,
+ 6.139653747056623,
+ 5.713805972586468,
+ 6.1347983129629675,
+ 6.259744999494166,
+ 6.3056298070297165,
+ 5.910440354631985,
+ 5.8835954683160585,
+ 5.220835133431365,
+ 6.1833776924296355,
+ 5.917365528293804,
+ 5.182518948660624,
+ 5.789345833502915,
+ 6.27307805062788,
+ 5.430511927274212,
+ 6.30543039128416,
+ 6.042024174723315,
+ 6.278288915076256,
+ 6.401545707303597,
+ 6.329062330606032,
+ 6.03044413788008,
+ 5.779040726687385,
+ 6.3214578459342645,
+ 5.773999255995174,
+ 6.153220049606104,
+ 5.985593461184303,
+ 5.85041006542845,
+ 5.544782257249412,
+ 17.198828829901483,
+ 15.832166263921502,
+ 289.02273160556274,
+ 289.1019835102325,
+ 289.0911573098433,
+ 158.9632328161497,
+ 159.05001509461806,
+ 158.9578280490611,
+ 230.63046754581066,
+ 16.96324776709122,
+ 111.36995503838953,
+ 109.28454151233609,
+ 66.67795608892239,
+ 5.801531182920318,
+ 5.602350992452259,
+ 28.24523654790016,
+ 297.3638001967426,
+ 297.8873716009496,
+ 297.85584510007334,
+ 172.8500680221948,
+ 52.69991683760123,
+ 52.742054956105406,
+ 52.26725341641363,
+ 30.474863740818122,
+ 29.876559878943322,
+ 30.095538829695286,
+ 57.121709134382805,
+ 57.08417479749206,
+ 57.121709134382805,
+ 58.35766604659248,
+ 57.10392186641453,
+ 58.270229082541846,
+ 144.72146556722114,
+ 140.97408231589003,
+ 68.83143666868216,
+ 45.54139870566798,
+ 110.66736282070771,
+ 109.55255502163028,
+ 106.89840874649332,
+ 110.31579262072049,
+ 59.02273273756845,
+ 59.54144584683863,
+ 60.54566400624395,
+ 78.09807438589976,
+ 76.65358931179722,
+ 77.04589531456075,
+ 40.19333702253081,
+ 245.48484696853066,
+ 246.4538297992321,
+ 29.726449069704334,
+ 29.73996217164821,
+ 29.048018764738597,
+ 29.898565225777624,
+ 30.2787852691503,
+ 223.51292939112454,
+ 221.8424309977891,
+ 55.59351935078446,
+ 180.69202689407106,
+ 179.961438357693,
+ 180.33530490299248,
+ 181.03317442384534,
+ 180.99668911318167,
+ 74.09117079946516,
+ 73.91307056402447,
+ 73.963608449251,
+ 74.55093651944755,
+ 74.04727074170113,
+ 19.998678340981318,
+ 19.745279317055118,
+ 57.080027124592334,
+ 56.628345460978544,
+ 54.978482363391976,
+ 5.207497920671469,
+ 6.465784372592953,
+ 6.408710059027337,
+ 5.427089800122047,
+ 3.599358701751435,
+ 5.091790968045093,
+ 5.9416907692372,
+ 5.860361113054719,
+ 4.324119960183062,
+ 5.969498655878389,
+ 6.727352625142107,
+ 7.757477618638037,
+ 6.4577883270435095,
+ 6.083365481579696,
+ 6.000674166324878,
+ 6.113380735913259,
+ 6.313672501276485,
+ 2.696245109418697,
+ 7.692770982784789,
+ 5.6045569125008186,
+ 5.7708941307385375,
+ 5.2727421965101735,
+ 6.105465852936534,
+ 5.114059160619625,
+ 5.518419438436354,
+ 5.788555445818896,
+ 5.945815077633355,
+ 5.044506571548534,
+ 6.196974389530762,
+ 5.176101838585821,
+ 6.237531901217576,
+ 6.11922333774371,
+ 5.926206075898504,
+ 5.36551529777753,
+ 6.490126406256156,
+ 5.937129340912119,
+ 6.950971485115515,
+ 5.8545224553786595,
+ 7.766757372860318,
+ 5.4988977973241955,
+ 5.820406302893245,
+ 6.027430495548447,
+ 7.69112934983055,
+ 6.446115284850895,
+ 3.791343114809968,
+ 5.27029764400794,
+ 6.172384979584919,
+ 2.6331845387257826,
+ 5.922416638347161,
+ 3.4773254635693682,
+ 5.925243100849451,
+ 6.530738185424229,
+ 3.4739886022395785,
+ 6.0668424775766505,
+ 5.497749249676741,
+ 6.372913849089708,
+ 4.034916351715564,
+ 5.773313399119551,
+ 5.457629374266947,
+ 3.060222333130873,
+ 5.649953366621779,
+ 5.439755625465727,
+ 6.121599125630817,
+ 6.086709356380471,
+ 6.29260108163004,
+ 5.64745142591536,
+ 6.461569634231952,
+ 5.848600754554443,
+ 3.620756297819203,
+ 5.182767437749989,
+ 7.9707816216503105,
+ 6.437471204433022,
+ 5.397201789778651,
+ 6.166970232574404,
+ 5.860824864537833,
+ 5.729478634529882,
+ 6.349091542471583,
+ 6.27682517548129,
+ 7.272018912022571,
+ 5.535407541275772,
+ 5.66026628940022,
+ 6.079409139481503,
+ 5.226860883784001,
+ 5.495409217554506,
+ 5.380194820714913,
+ 5.9773629024960595,
+ 6.542488616728806,
+ 2.6812202674755725,
+ 3.0888987620908273,
+ 6.440670364557843,
+ 2.646936875739937,
+ 3.223414595314726,
+ 5.466137205020111,
+ 5.0322320947821435,
+ 5.934793894078132,
+ 5.468263883106917,
+ 3.727873502405637,
+ 5.9076965529337535,
+ 5.710278152399498,
+ 6.1322690375455675,
+ 6.1361026805750525,
+ 6.241150714124154,
+ 6.46828288153851,
+ 5.852856032021933,
+ 4.050357464160131,
+ 6.513012440268778,
+ 5.143207672092793,
+ 5.86255057849143,
+ 5.534182948161781,
+ 6.22791177055201,
+ 6.333886402481471,
+ 5.846821599268126,
+ 6.052274699414705,
+ 6.147121827988416,
+ 4.999265905005448,
+ 5.591479422949357,
+ 5.841514759154813,
+ 5.939767875928577,
+ 3.9257427870057042,
+ 5.17137534149786,
+ 5.528517234239869,
+ 5.5496607448172215,
+ 5.628195658501942,
+ 5.931117252658517,
+ 5.930816784116781,
+ 5.485357292987711,
+ 6.34338202794868,
+ 5.599531677249198,
+ 6.326979779604401,
+ 3.441499817437022,
+ 5.049662918821324,
+ 5.8989716617235795,
+ 5.618627843183668,
+ 5.616256745759635,
+ 5.55148293890525,
+ 2.6498974713776886,
+ 2.905610543068398,
+ 5.925325228873564,
+ 6.38882241461592,
+ 6.22709289006513,
+ 8.149879298548484,
+ 5.333132570508324,
+ 6.501536158876996,
+ 6.257593240153297,
+ 5.034862271619956,
+ 5.902145825577949,
+ 6.900237279759716,
+ 5.450654297587351,
+ 4.96778456220752,
+ 6.01054252009459,
+ 5.600143187407637,
+ 3.0596222101365265,
+ 5.854185218327061,
+ 6.4670777736185325,
+ 4.991751873842562,
+ 6.185786889249087,
+ 5.919050087300384,
+ 3.3244052660926364,
+ 5.894089373168637,
+ 5.607348505055622,
+ 6.315717668711797,
+ 6.481393887749142,
+ 5.895802713843686,
+ 5.069752160561466,
+ 6.493323635809089,
+ 5.142806871740191,
+ 4.7255655022387835,
+ 5.47465196538989,
+ 5.452504967956006,
+ 5.264087969727583,
+ 2.780308968886856,
+ 4.2930616618761475,
+ 6.2735296509271725,
+ 5.885828066976812,
+ 5.863772225520567,
+ 5.616819182981086,
+ 6.456897525371922,
+ 5.097585867432237,
+ 7.716593425271542,
+ 5.859121711989529,
+ 5.743605498883207,
+ 6.499982353655108,
+ 5.938172814301349,
+ 3.060222333130873,
+ 6.253726677330396,
+ 6.609661134900537,
+ 6.380393646314867,
+ 5.4727638480783005,
+ 7.6745063204827515,
+ 6.55293613986956,
+ 5.657071119439555,
+ 6.1677834117215955,
+ 5.663660060086805,
+ 3.450195615591032,
+ 3.256127826474485,
+ 3.3548129693446005,
+ 5.855146088320262,
+ 5.076586535932551,
+ 3.5007578128643204,
+ 4.4036230264762715,
+ 5.912141588491899,
+ 5.449117869025823,
+ 4.8187727030191185,
+ 5.818803478044902,
+ 5.34497647778627,
+ 8.503255121479427,
+ 5.194067161188923,
+ 6.243118146629969,
+ 8.024826284988366,
+ 6.029816884040239,
+ 3.3920120358667565,
+ 5.477022207009868,
+ 3.3845715959567215,
+ ...]</code></pre>
+</div>
+</div>
+<p>조건문 이내에서 호텔을 출력하는</p>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>filtered_df <span class="op">=</span> df[(df[<span class="st">'star_rating'</span>] <span class="op">&gt;=</span> <span class="dv">4</span>) <span class="op">&amp;</span> (pd.Series(distance_list) <span class="op">&lt;=</span> <span class="dv">200</span>)]</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>filtered_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>ean_hotel_id</th>
+      <th>name</th>
+      <th>address1</th>
+      <th>city</th>
+      <th>state_province</th>
+      <th>postal_code</th>
+      <th>latitude</th>
+      <th>longitude</th>
+      <th>star_rating</th>
+      <th>high_rate</th>
+      <th>low_rate</th>
+      <th>distance</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>114</th>
+      <td>482259</td>
+      <td>Topping Rose House</td>
+      <td>One Bridgehampton - Sag Harbor Turnpike</td>
+      <td>Bridgehampton</td>
+      <td>NY</td>
+      <td>11932</td>
+      <td>40.93780</td>
+      <td>-72.30069</td>
+      <td>4.5</td>
+      <td>995.3900</td>
+      <td>295.3900</td>
+      <td>90.001264</td>
+    </tr>
+    <tr>
+      <th>129</th>
+      <td>339951</td>
+      <td>Sheraton Brooklyn New York Hotel</td>
+      <td>228 Duffield Street</td>
+      <td>Brooklyn</td>
+      <td>NY</td>
+      <td>11201</td>
+      <td>40.69160</td>
+      <td>-73.98436</td>
+      <td>4.0</td>
+      <td>409.1485</td>
+      <td>259.0916</td>
+      <td>1.423805</td>
+    </tr>
+    <tr>
+      <th>134</th>
+      <td>406834</td>
+      <td>McCarren Hotel &amp; Pool</td>
+      <td>160 N 12th St</td>
+      <td>Brooklyn</td>
+      <td>NY</td>
+      <td>11249</td>
+      <td>40.72100</td>
+      <td>-73.95543</td>
+      <td>4.0</td>
+      <td>575.4100</td>
+      <td>330.4100</td>
+      <td>3.786288</td>
+    </tr>
+    <tr>
+      <th>142</th>
+      <td>403899</td>
+      <td>The Box House Hotel</td>
+      <td>77 Box Street</td>
+      <td>Brooklyn</td>
+      <td>NY</td>
+      <td>11222</td>
+      <td>40.73749</td>
+      <td>-73.95329</td>
+      <td>4.0</td>
+      <td>379.4200</td>
+      <td>249.4200</td>
+      <td>4.885345</td>
+    </tr>
+    <tr>
+      <th>154</th>
+      <td>136344</td>
+      <td>New York Marriott at the Brooklyn Bridge</td>
+      <td>333 Adams St</td>
+      <td>Brooklyn</td>
+      <td>NY</td>
+      <td>11201</td>
+      <td>40.69365</td>
+      <td>-73.98870</td>
+      <td>4.0</td>
+      <td>489.0700</td>
+      <td>212.0400</td>
+      <td>1.577023</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>1592</th>
+      <td>333528</td>
+      <td>Viana Hotel &amp; Spa, BW Premier Collection</td>
+      <td>3998 Brush Hollow Rd</td>
+      <td>Westbury</td>
+      <td>NY</td>
+      <td>11590</td>
+      <td>40.77629</td>
+      <td>-73.55967</td>
+      <td>4.0</td>
+      <td>509.9900</td>
+      <td>133.9500</td>
+      <td>23.431169</td>
+    </tr>
+    <tr>
+      <th>1600</th>
+      <td>324657</td>
+      <td>The Ritz-Carlton New York, Westchester</td>
+      <td>3 Renaissance Square</td>
+      <td>White Plains</td>
+      <td>NY</td>
+      <td>10601</td>
+      <td>41.03257</td>
+      <td>-73.76664</td>
+      <td>5.0</td>
+      <td>479.4042</td>
+      <td>349.2972</td>
+      <td>27.466891</td>
+    </tr>
+    <tr>
+      <th>1601</th>
+      <td>514006</td>
+      <td>Furnished Quarters Bank Street Commons</td>
+      <td>15/25 Bank Street</td>
+      <td>White Plains</td>
+      <td>NY</td>
+      <td>10606</td>
+      <td>41.03050</td>
+      <td>-73.77419</td>
+      <td>4.0</td>
+      <td>180.0000</td>
+      <td>179.0000</td>
+      <td>27.174550</td>
+    </tr>
+    <tr>
+      <th>1602</th>
+      <td>566642</td>
+      <td>Global Luxury Apartments in White Plains</td>
+      <td>15 Bank Street</td>
+      <td>White Plains</td>
+      <td>NY</td>
+      <td>10606</td>
+      <td>41.03150</td>
+      <td>-73.77401</td>
+      <td>4.0</td>
+      <td>175.2200</td>
+      <td>125.1500</td>
+      <td>27.241501</td>
+    </tr>
+    <tr>
+      <th>1603</th>
+      <td>629966</td>
+      <td>Global Luxury Suites at White Plains</td>
+      <td>27 Barker Avenue</td>
+      <td>White Plains</td>
+      <td>NY</td>
+      <td>10601</td>
+      <td>41.03565</td>
+      <td>-73.76925</td>
+      <td>4.0</td>
+      <td>190.0300</td>
+      <td>189.0300</td>
+      <td>27.604500</td>
+    </tr>
+  </tbody>
+</table>
+<p>245 rows × 12 columns</p>
+</div>
+</div>
+</div>
 
 
 </section>
